@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--上面的为mapping文件的约束头-->
+
+<mapper namespace="com.example.serverdemo.mapper.UserMapper">
+    <select id="selectAll" resultType="com.example.serverdemo.entity.UserInfo">
+        select * from user_info
+    </select>
+
+    <select id="select" resultType="com.example.serverdemo.entity.UserInfo">
+        select * from user_info where name = #{name} and password = #{password}
+    </select>
+
+    <select id="check" resultType="com.example.serverdemo.entity.UserInfo">
+        select * from user_info where name = #{name}
+    </select>
+
+    <insert id="insert">
+        insert into user_info(name, password) values (#{name},#{password})
+    </insert>
+    
+    <update id="update">
+        update user_info
+        set vip = 1
+        where name = #{name} and id = #{id};
+    </update>
+
+</mapper>

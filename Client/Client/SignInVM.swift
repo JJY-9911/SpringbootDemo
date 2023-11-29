@@ -6,11 +6,17 @@
 //
 
 import Foundation
-class LoginVM: ObservableObject {
+class SignInVM: ObservableObject {
     @Published
     var name: String = ""
     @Published
     var password: String = ""
+    
+    @Published
+    var go: Bool = false
+    
+    @Published
+    var goRegister: Bool = false
     
     init(){}
 }

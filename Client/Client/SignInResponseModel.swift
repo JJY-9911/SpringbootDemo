@@ -6,3 +6,16 @@
 //
 
 import Foundation
+
+class SignInResponseModel: Decodable{
+    var code: Int
+    var msg: String
+    var userInfo: UserInfo
+}
+
+struct UserInfo: Decodable{
+    var id: Int
+    var name: String
+    var password: String
+    var vip: Int
+}
