@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "山.png",
+      "filename" : "yanjing-.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "山 1.png",
+      "filename" : "yanjing- 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "山 2.png",
+      "filename" : "yanjing- 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

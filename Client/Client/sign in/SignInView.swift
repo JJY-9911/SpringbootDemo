@@ -11,43 +11,48 @@ import Alamofire
 struct SignInView: View {
     @StateObject private var signInVM: SignInVM = SignInVM()
     @StateObject private var alertVM = AlertVM()
+    @FocusState private var showKeyborad: Bool
     
     var body: some View {
         NavigationView(){
-            ZStack{
-                Color("black2")
-           
-                VStack{
-                    welcome()
-                    nameInput()
-                    passwordInput()
-                  
-                    AlertView(alertVM: alertVM)
-                        .padding(.vertical, 80)
-                        .opacity(alertVM.show ? 1 : 0)
+            GeometryReader{_ in
+                ZStack{
+                    VStack{
+                        welcome()
+                        nameInput()
+                        passwordInput()
+                        
+                        AlertView(alertVM: alertVM)
+                            .padding(.vertical, 80)
+                            .opacity(alertVM.show ? 1 : 0)
+                        signInBtn()
+                            .padding(.bottom, 20)
+                        signUpBtn()
+                            
+                        Spacer()
+                    }
                     
-                    signInBtn()
-                        .padding(.bottom, 20)
-                    signUpBtn()
-                    Spacer()
+                    NavigationLink(destination: MainView(), isActive: $signInVM.go){
+                        EmptyView()
+                    }
+                    
+                    NavigationLink(destination: RegisterView(), isActive: $signInVM.goRegister){
+                        EmptyView()
+                    }
+                }//Z
+                .background(Color("black2"))
+                .onChange(of: signInVM.tel){_ in
+                    checkCompletion()
                 }
-                
-                NavigationLink(destination: MainView(), isActive: $signInVM.go){
-                    EmptyView()
+                .onChange(of: signInVM.password){_ in
+                    checkCompletion()
                 }
-                
-                NavigationLink(destination: RegisterView(), isActive: $signInVM.goRegister){
-                    EmptyView()
+                .onTapGesture {
+                    showKeyborad = false
                 }
-            }
-            .ignoresSafeArea()
-            .onChange(of: signInVM.tel){_ in
-                checkCompletion()
-            }
-            .onChange(of: signInVM.password){_ in
-                checkCompletion()
-            }
-        }
+                .ignoresSafeArea()
+            }//geo
+        }//nav
     }
     
     func login( _ tel: String, _ password: String) {
@@ -125,9 +130,11 @@ extension SignInView{
             let w = proxy.size.width
             let h = proxy.size.height
             Rectangle()
-                .frame(height: SCREEN_HEIGHT/3.5)
+                .frame(width: w-20,height: SCREEN_HEIGHT/3.5)
                 .foregroundColor(Color("green4"))
                 .cornerRadius(20)
+                .position(x: w/2, y:h/2)
+                
             Image("wallet")
                 .resizable()
                 .frame(width: 48, height: 48)
@@ -140,7 +147,7 @@ extension SignInView{
             }
             .padding(.leading, 20)
         }
-        .frame(width: SCREEN_WIDTH-10,height: SCREEN_HEIGHT/3.5)
+        .frame(height: SCREEN_HEIGHT/3.5)
         .padding(.bottom, 18)
     }
     
@@ -162,6 +169,7 @@ extension SignInView{
                 TextField("tel",text: $signInVM.tel)
                     .background(.clear)
                     .foregroundColor(.black)
+                    .focused($showKeyborad)
             }
         }
         .frame(width: SCREEN_WIDTH-40, height: 48)
@@ -174,17 +182,42 @@ extension SignInView{
     private func passwordInput() -> some View{
         ZStack(alignment: .center){
             HStack{
+                if !signInVM.showPassword{
+                    Spacer()
+                }
+                Rectangle()
+                    .frame(width: signInVM.showPassword ? SCREEN_WIDTH-44 : 0, height: 44)
+                    .cornerRadius(12)
+                    .foregroundColor(Color("black2"))
+            }
+            
+            HStack{
                 Image("key")
                     .resizable()
                     .frame(width: 24, height: 24)
                     .padding(.leading, 16)
-                    
-                TextField("security code",text: $signInVM.password)
-                    .background(.clear)
-                    .foregroundColor(.black)
-                    
+                
+                if signInVM.showPassword{
+                    TextField("security code",text: $signInVM.password)
+                        .background(.clear)
+                        .foregroundColor(Color("white2"))
+                        .focused($showKeyborad)
+                }else {
+                    SecureField("security code", text: $signInVM.password)
+                        .background(.clear)
+                        .foregroundColor(.black)
+                        .focused($showKeyborad)
+                }
+                Image(signInVM.showPassword ? "eye2" : "eye")
+                    .resizable()
+                    .frame(width: 24, height: 24)
+                    .padding(.trailing, 10)
+                    .onTapGesture {
+                        withAnimation(.spring().speed(2)){
+                            signInVM.showPassword.toggle()
+                        }
+                    }
             }
-            
         }
         .frame(width: SCREEN_WIDTH-40, height: 48)
         .background(Color("white2"))
@@ -207,6 +240,7 @@ extension SignInView{
                     .frame(width: SCREEN_WIDTH-80, height: 48)
                     .background(Color(signInVM.light ? "green4" : "green3"))
                     .cornerRadius(32)
+                    
             }
     }
     
@@ -223,6 +257,7 @@ extension SignInView{
                     .background(Color("green3"))
                     .cornerRadius(32)
             }
+            
     }
     @ViewBuilder
     private func wx() -> some View{

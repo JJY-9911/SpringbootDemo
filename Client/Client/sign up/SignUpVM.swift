@@ -21,10 +21,16 @@ class SignUpVM: ObservableObject{
     var passwordCheck: Bool = false
     
     @Published
-    var comfirm: String = ""
+    var showPassword: Bool = false
     
     @Published
-    var comfirmCheck: Bool = false
+    var confirm: String = ""
+    
+    @Published
+    var confirmCheck: Bool = false
+    
+    @Published
+    var showConfirm: Bool = false
     
     @Published
     var back: Bool = false

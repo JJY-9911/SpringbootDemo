@@ -21,5 +21,8 @@ class SignInVM: ObservableObject {
     @Published
     var light: Bool = false
     
+    @Published
+    var showPassword: Bool = false
+    
     init(){}
 }

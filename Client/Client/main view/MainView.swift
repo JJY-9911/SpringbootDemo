@@ -13,6 +13,7 @@ struct MainView: View {
             Color("green3")
         }
         .ignoresSafeArea()
+        .navigationBarBackButtonHidden()
     }
 }
 

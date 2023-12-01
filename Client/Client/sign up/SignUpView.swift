@@ -12,39 +12,46 @@ struct RegisterView: View {
     @StateObject private var signUpVM = SignUpVM()
     @StateObject private var alertVM = AlertVM()
     @Environment(\.presentationMode) var presentationMode
+    @FocusState private var showKeyborad: Bool
+    
     var body: some View {
-        ZStack{
-            Color("black2")
-            VStack{
-                register()
-                nameInput()
-                passwordInput()
-                confirm()
-                AlertView(alertVM: alertVM)
-                    .opacity(alertVM.show ? 1 : 0)
-                    .padding(.vertical, 80)
-                done()
-                Spacer()
-            }
-            .onChange(of: signUpVM.tel){_ in
-                
-                checkShow()
-            }
-            .onChange(of: signUpVM.password){_ in
-                
-                checkShow()
-            }
-            .onChange(of: signUpVM.comfirm){_ in
-              
-                checkShow()
-            }
+        GeometryReader{_ in
+            ZStack{
+                VStack{
+                    register()
+                    nameInput()
+                    passwordInput()
+                    confirm()
+                    AlertView(alertVM: alertVM)
+                        .opacity(alertVM.show ? 1 : 0)
+                        .padding(.vertical, 80)
+                    done()
+                    Spacer()
+                }
+                .onChange(of: signUpVM.tel){_ in
+                    
+                    checkShow()
+                }
+                .onChange(of: signUpVM.password){_ in
+                    
+                    checkShow()
+                }
+                .onChange(of: signUpVM.confirm){_ in
+                  
+                    checkShow()
+                }
+            }//z
+            .background(Color("black2"))
+            .ignoresSafeArea()
+            .navigationBarBackButtonHidden(true)
+            .onTapGesture {
+                self.showKeyborad = false
+            }//geo
         }
-        .ignoresSafeArea()
-        .navigationBarBackButtonHidden(true)
     }
     
     private func checkCompletion() -> Bool{
-        if signUpVM.telCheck && signUpVM.passwordCheck && signUpVM.comfirmCheck {
+        if signUpVM.telCheck && signUpVM.passwordCheck && signUpVM.confirmCheck {
             signUpVM.light = true
             return true
         }else {
@@ -53,8 +60,8 @@ struct RegisterView: View {
         }
     }
     
-    private func comfirm() -> Bool {
-        if signUpVM.password == signUpVM.comfirm {
+    private func confirm() -> Bool {
+        if signUpVM.password == signUpVM.confirm {
             return true
         }else {
             return false
@@ -124,10 +131,10 @@ struct RegisterView: View {
             withAnimation(.spring()){signUpVM.passwordCheck = false}
         }
         
-        if signUpVM.comfirm.count > 0 && signUpVM.comfirm == signUpVM.password{
-            withAnimation(.spring()){signUpVM.comfirmCheck = true}
+        if signUpVM.confirm.count > 0 && signUpVM.confirm == signUpVM.password{
+            withAnimation(.spring()){signUpVM.confirmCheck = true}
         }else {
-            withAnimation(.spring()){signUpVM.comfirmCheck = false}
+            withAnimation(.spring()){signUpVM.confirmCheck = false}
         }
         checkCompletion()
     }//checkShow
@@ -184,6 +191,7 @@ extension RegisterView{
                     TextField("tel",text: $signUpVM.tel)
                         .background(.clear)
                         .foregroundColor(.black)
+                        .focused($showKeyborad)
                 }
             }
             .frame(height: 48)
@@ -200,21 +208,41 @@ extension RegisterView{
     @ViewBuilder
     private func passwordInput() -> some View{
         HStack(spacing: 0){
-            ZStack(alignment: .center){
+            ZStack{
+                HStack{
+                    if !signUpVM.showPassword{Spacer()}
+                    RoundedRectangle(cornerRadius: 12)
+                        .frame(width: signUpVM.showPassword ? .infinity : 0)
+                        .padding(2)
+                }
                 HStack{
                     Image("key")
                         .resizable()
                         .frame(width: 24, height: 24)
                         .padding(.leading, 16)
-                    TextField("password",text: $signUpVM.password)
-                        .background(.clear)
-                        .foregroundColor(.black)
+                    if signUpVM.showPassword{
+                        TextField("security code",text: $signUpVM.password)
+                            .background(.clear)
+                            .foregroundColor(Color("white2"))
+                            .focused($showKeyborad)
+                    }else {
+                        SecureField("security code", text: $signUpVM.password)
+                            .focused($showKeyborad)
+                    }
+                    Image(signUpVM.showPassword ? "eye2" : "eye")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(.trailing, 10)
+                        .onTapGesture {
+                            withAnimation(.spring().speed(2)){
+                                signUpVM.showPassword.toggle()
+                            }
+                        }
                 }
             }
             .frame(height: 48)
             .background(Color("white2"))
             .cornerRadius(12)
-
             
             Image("check")
                 .resizable()
@@ -228,15 +256,36 @@ extension RegisterView{
     @ViewBuilder
     private func confirm() -> some View{
         HStack(spacing: 0){
-            ZStack(alignment: .center){
+            ZStack {
+                HStack{
+                    if !signUpVM.showConfirm{Spacer()}
+                    RoundedRectangle(cornerRadius:12)
+                        .frame(width: signUpVM.showConfirm ? .infinity : 0)
+                        .padding(2)
+                }
                 HStack{
                     Image("key")
                         .resizable()
                         .frame(width: 24, height: 24)
                         .padding(.leading, 16)
-                    TextField("password",text: $signUpVM.comfirm)
-                        .background(.clear)
-                        .foregroundColor(.black)
+                    if signUpVM.showConfirm {
+                        TextField("confirm security code",text: $signUpVM.confirm)
+                            .background(.clear)
+                            .foregroundColor(Color("white2"))
+                            .focused($showKeyborad)
+                    }else {
+                        SecureField("confirm security code", text: $signUpVM.confirm)
+                            .focused($showKeyborad)
+                    }
+                    Image(signUpVM.showConfirm ? "eye2" : "eye")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .padding(.trailing, 10)
+                        .onTapGesture {
+                            withAnimation(.spring().speed(2)){
+                                signUpVM.showConfirm.toggle()
+                            }
+                        }
                 }
             }
             .frame(height: 48)
@@ -246,8 +295,8 @@ extension RegisterView{
             
             Image("check")
                 .resizable()
-                .frame(width: signUpVM.comfirmCheck ? 24 : 0, height: 24)
-                .padding(.leading, signUpVM.comfirmCheck ? 5 : 0)
+                .frame(width: signUpVM.confirmCheck ? 24 : 0, height: 24)
+                .padding(.leading, signUpVM.confirmCheck ? 5 : 0)
             
         }
         .padding(.horizontal, 20)
@@ -258,7 +307,7 @@ extension RegisterView{
         Button(
             action: {
                 if checkCompletion(){
-                    if comfirm(){
+                    if confirm(){
                         signUp(signUpVM.tel, signUpVM.password)
                     }else {
                         setAlert("Password inconsistency, please try again.", "red")
