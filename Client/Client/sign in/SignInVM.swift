@@ -8,7 +8,7 @@
 import Foundation
 class SignInVM: ObservableObject {
     @Published
-    var name: String = ""
+    var tel: String = ""
     @Published
     var password: String = ""
     
@@ -17,6 +17,9 @@ class SignInVM: ObservableObject {
     
     @Published
     var goRegister: Bool = false
+    
+    @Published
+    var light: Bool = false
     
     init(){}
 }

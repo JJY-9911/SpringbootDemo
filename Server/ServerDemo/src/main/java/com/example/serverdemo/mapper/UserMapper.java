@@ -11,9 +11,14 @@ import java.util.List;
 @Mapper
 public interface UserMapper extends BaseMapper<UserInfo> {
     List<UserInfo> selectAll();
-    UserInfo select(String name, String password);
-    UserInfo check(String name);
-    Boolean insert(String name, String password);
-    Boolean update(String name, Integer id);
-    Boolean delete(String name, String password);
+    //登陆验证
+    UserInfo select(String tel, String password);
+    //查重
+    UserInfo check(String tel);
+    //注册
+    Boolean insert(String tel, String password);
+    //成为vip
+    Boolean update(String tel, Integer id);
+    //注销
+    Boolean delete(String tel, String password);
 }

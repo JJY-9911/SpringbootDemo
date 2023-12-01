@@ -12,7 +12,7 @@ public class BeVipServiceImpl extends ServiceImpl<UserMapper, UserInfo> implemen
     @Resource
     private UserMapper userMapper;
     @Override
-    public void beVip(String name, Integer id) {
-        userMapper.update(name, id);
+    public void beVip(String tel, Integer id) {
+        userMapper.update(tel, id);
     }
 }

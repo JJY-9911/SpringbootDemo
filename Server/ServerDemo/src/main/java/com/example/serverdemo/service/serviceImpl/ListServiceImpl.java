@@ -21,7 +21,9 @@ public class ListServiceImpl extends ServiceImpl<UserMapper, UserInfo> implement
     }
 
     @Override
-    public UserInfo select(String name, String password) {
-        return userMapper.select(name, password);
+    public UserInfo select(String tel, String password) {
+        return userMapper.select(tel, password);
     }
+
+
 }

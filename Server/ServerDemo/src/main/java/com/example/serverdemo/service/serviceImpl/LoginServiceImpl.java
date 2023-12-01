@@ -19,8 +19,8 @@ public class LoginServiceImpl extends ServiceImpl<UserMapper, UserInfo> implemen
     @Resource
     private UserMapper userMapper;
     @Override
-    public UserInfo login(String name, String password) {
-        UserInfo userInfo = userMapper.select(name, password);
+    public UserInfo login(String tel, String password) {
+        UserInfo userInfo = userMapper.select(tel, password);
         System.out.println(userInfo);
         return userInfo;
     }

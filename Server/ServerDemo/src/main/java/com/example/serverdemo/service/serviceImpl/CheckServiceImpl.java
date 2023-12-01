@@ -12,9 +12,8 @@ public class CheckServiceImpl extends ServiceImpl<UserMapper, UserInfo> implemen
     @Resource
     private UserMapper userMapper;
     @Override
-    public boolean check(String name) {
-        UserInfo u = userMapper.check(name);
-        System.out.println(u.getName());
-        return true;
+    public UserInfo check(String tel) {
+        UserInfo u = userMapper.check(tel);
+        return u;
     }
 }

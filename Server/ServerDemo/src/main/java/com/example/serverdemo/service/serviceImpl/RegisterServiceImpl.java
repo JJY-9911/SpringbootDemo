@@ -13,7 +13,7 @@ public class RegisterServiceImpl extends ServiceImpl<UserMapper, UserInfo> imple
     private UserMapper userMapper;
     @Override
     public Boolean register(UserInfo userInfo) {
-        userMapper.insert(userInfo.getName(), userInfo.getPassword());
+        userMapper.insert(userInfo.getTel(), userInfo.getPassword());
         return true;
     }
 }

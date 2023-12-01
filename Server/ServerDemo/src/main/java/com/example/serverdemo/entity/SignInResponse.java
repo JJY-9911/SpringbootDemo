@@ -18,10 +18,17 @@ public class SignInResponse implements Serializable {
         signInResponse.setUserInfo(userInfo);
         return signInResponse;
     }
-    public static SignInResponse fail(){
+    public static SignInResponse noUser(){
         SignInResponse signInResponse = new SignInResponse();
         signInResponse.setCode(1);
         signInResponse.setMsg("no user, please sign up");
+        return signInResponse;
+    }
+
+    public static SignInResponse codeWrong(){
+        SignInResponse signInResponse = new SignInResponse();
+        signInResponse.setCode(2);
+        signInResponse.setMsg("code wrong, please try again.");
         return signInResponse;
     }
 }

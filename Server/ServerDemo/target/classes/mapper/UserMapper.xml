@@ -8,21 +8,21 @@
     </select>
 
     <select id="select" resultType="com.example.serverdemo.entity.UserInfo">
-        select * from user_info where name = #{name} and password = #{password}
+        select * from user_info where tel = #{tel} and password = #{password}
     </select>
 
     <select id="check" resultType="com.example.serverdemo.entity.UserInfo">
-        select * from user_info where name = #{name}
+        select * from user_info where tel = #{tel}
     </select>
 
     <insert id="insert">
-        insert into user_info(name, password) values (#{name},#{password})
+        insert into user_info(tel, password) values (#{tel},#{password})
     </insert>
     
     <update id="update">
         update user_info
         set vip = 1
-        where name = #{name} and id = #{id};
+        where tel = #{tel} and id = #{id};
     </update>
 
 </mapper>

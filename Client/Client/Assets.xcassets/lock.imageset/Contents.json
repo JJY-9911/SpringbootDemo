@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "yuechikong 2.png",
+      "filename" : "mima.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "yuechikong 1.png",
+      "filename" : "mima 1.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "yuechikong.png",
+      "filename" : "mima 2.png",
       "idiom" : "universal",
       "scale" : "3x"
     }

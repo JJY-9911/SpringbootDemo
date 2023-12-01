@@ -15,7 +15,7 @@ import java.io.Serializable;
 public class UserInfo {
     @TableId(value = "id")
     private Integer id;
-    private String name;
+    private String tel;
     private String password;
     private int vip;
 

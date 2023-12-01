@@ -17,17 +17,17 @@ public class VipController {
     @Autowired
     private CheckService checkService;
     @PostMapping("/bevip")
-    public String beVip(@RequestParam String name, @RequestParam Integer id) {
-        if (checkService.check(name)) {
-            if (true) {
-                beVipService.beVip(name, id);
+    public String beVip(@RequestParam String tel, @RequestParam Integer id) {
+        UserInfo u = checkService.check(tel);
+        if (u != null) {
+            if (u.getVip() == 0) {
+                beVipService.beVip(tel, id);
                 return "成为vip！";
             }else {
                 return "已经是vip";
             }
-        } else {
+        }else {
             return "用户不存在";
         }
-
     }
 }
